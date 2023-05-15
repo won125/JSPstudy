@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>Ajax 비동기 실습(서버로 전송하기)</title>
+<script type="text/javascript">
+	function fn_server() {
+		$.ajax({
+			type:"post", //전송방식
+			dataType:"xml", //전송할 데이터 타입
+			async:false, // 동기식 여부
+			url:"http://localhost:8090/jspetc/AjaxTest02", // url주소
+			success:function (info,textStatus){
+				$(info).find("book").each(function () {
+					let title = $(this).find("title").text();
+					let writer = $(this).find("writer").text();
+					let img = $(this).find("image").text();
+					$("#info").append(
+						"<p>" + title +"</p>" + "<p>" + writer +"</p>" + "<img src='" + img +"' alt='' width=300 height=400/>"
+						+ "<p>===========================</p>"+
+						"<br>"
+					);
+				});
+			},
+			error:function(info, textStatus){ // 실패시 작동기능
+				alert("에러가 발생했습니다!!");
+			},
+			complete:function(info, textStatus){ // 완료시 작동기능
+				alert("작업을 완료했습니다.");
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<input type="button" value="정보요청" onclick="fn_server()">
+	<div id="info"></div>
+</body>
+</html>
